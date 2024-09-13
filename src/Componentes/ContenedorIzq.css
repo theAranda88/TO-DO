@@ -1,0 +1,18 @@
+.ContenedorIzq{
+    width: 35%;
+    height: 800px;
+    margin: 80px auto;
+    background-color: #f9f6f653;
+    border-radius: 10px ;
+    border-color: gray;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.40);
+    
+}
+
+
+
+
+
