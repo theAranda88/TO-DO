@@ -3,7 +3,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 8vh;
+    height: 7vh;
+   
     
 }
 .imgCheck{
@@ -13,8 +14,8 @@
     cursor: pointer;
 }
 .imgDelete{
-    width: 25px;
-    height: 25px;
+    width: 22px;
+    height: 22px;
     margin-left: 10px;
     cursor: pointer;
 }
@@ -56,6 +57,8 @@
   .ocultar{
     display: none;
   }
-  
+  p {
+    margin-left: 10px;
+  }
 
   

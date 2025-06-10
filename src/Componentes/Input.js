@@ -1,14 +1,25 @@
+import React from 'react';
 import './Input.css';
-function Input(props){
+function Input({onChangeTextArea, setNuevaTarea, nuevaTarea}){
+
+    const inputChange = (e) => {
+        const text = e.target.value;
+        setNuevaTarea(text);
+        if (onChangeTextArea) {
+            onChangeTextArea(e); 
+        }
+    }
+            
     return (
         <>
             <label className="InputLabel" name="Input">Nombre de Tarea</label>
-            <textarea 
+            <textarea
                 className="Input" 
                 type="text" 
                 placeholder="Ingrese su Tarea" 
                 name="Input"
-                onChange={e=>props.setNuevaTarea(e.target.value)}
+                value={nuevaTarea}
+                onChange={inputChange}
             />
         </>
     )

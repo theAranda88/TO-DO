@@ -15,7 +15,7 @@ button{
     text-shadow:5px 5px 5px rgba(1,1,1,.5);
     width:45px;
     display: flex;
-    margin-left: 55px;
+    margin-left: 10%;
 }
 img{
     width: 20px;

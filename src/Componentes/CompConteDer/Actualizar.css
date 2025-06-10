@@ -1,0 +1,32 @@
+.div1 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+  }
+  
+  .div2 {
+    background-color: #ffffff8f;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+  }
+  .Icon-delete-Modal{
+    height: 10%;
+    position:relative;
+    top:-24px;right:0
+  }
+  .Icon-delete-Modal:hover{
+    color:red
+  }
+  .btnActualizar{
+    height: max-content;
+    width: max-content;
+  }

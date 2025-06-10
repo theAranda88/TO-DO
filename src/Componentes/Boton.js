@@ -1,6 +1,8 @@
 import './Boton.css';
 import img from '../Imagenes/mas.png'
 function Boton (props){
+
+        
     return(
         <button 
             className='Boton'
