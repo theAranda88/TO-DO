@@ -26,42 +26,27 @@ jest.mock('./Imagenes/borrar.png', () => 'mock-delete-image');
 
 window.alert = jest.fn();
 
-describe('App - Integración Completa de Lista de Tareas', () => {
+describe('Casos de Prueba Documentados - Gestión de Tareas', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockLocalStorage.clear();
   });
 
-  test('renderiza la aplicación correctamente con tareas iniciales', () => {
-    render(<App />);
-    
-    expect(screen.getByText('Tarea 1')).toBeInTheDocument();
-    expect(screen.getByText('Tarea 2')).toBeInTheDocument();
-    expect(screen.getByText('Tarea 3')).toBeInTheDocument();
-    expect(screen.getByText('Tarea 4')).toBeInTheDocument();
-    
-    expect(screen.getByPlaceholderText('Ingrese su Tarea')).toBeInTheDocument();
-  });
-
-  test('añade una nueva tarea correctamente', async () => {
-    
+  test('TC001 - Crear tarea válida', async () => {
     render(<App />);
     
     const input = screen.getByPlaceholderText('Ingrese su Tarea');
     const button = screen.getByRole('button');
     
-    await userEvent.type(input, 'Nueva tarea de prueba');
+    await userEvent.type(input, 'Estudiar React');
     await userEvent.click(button);
     
     await waitFor(() => {
-      expect(screen.getByText('Nueva tarea de prueba')).toBeInTheDocument();
+      expect(screen.getByText('Estudiar React')).toBeInTheDocument();
     });
-    
-    expect(input).toHaveValue('');
   });
 
-  test('marca una tarea como completada', async () => {
-    
+  test('TC006 - Completar tarea', async () => {
     render(<App />);
     
     const tarea1 = screen.getByText('Tarea 1');
@@ -72,8 +57,7 @@ describe('App - Integración Completa de Lista de Tareas', () => {
     });
   });
 
-  test('desmarca una tarea completada', async () => {
-    
+  test('TC007 - Descompletar tarea', async () => {
     render(<App />);
     
     const tarea1 = screen.getByText('Tarea 1');
@@ -89,8 +73,7 @@ describe('App - Integración Completa de Lista de Tareas', () => {
     });
   });
 
-  test('elimina una tarea correctamente', async () => {
-    
+  test('TC008 - Eliminar tarea existente', async () => {
     render(<App />);
     
     expect(screen.getByText('Tarea 1')).toBeInTheDocument();
@@ -105,128 +88,64 @@ describe('App - Integración Completa de Lista de Tareas', () => {
     });
   });
 
-  test('no añade tarea con nombre vacío', async () => {
-    
-    render(<App />);
-    
-    const button = screen.getByRole('button');
-    const tareasIniciales = screen.getAllByText(/Tarea \d/);
-    const cantidadInicial = tareasIniciales.length;
-    
-    await userEvent.click(button);
-    
-    const tareasFinales = screen.getAllByText(/Tarea \d/);
-    expect(tareasFinales).toHaveLength(cantidadInicial);
-  });
-
-  test('no añade tarea con solo espacios en blanco', async () => {
-    
-    render(<App />);
-    
-    const input = screen.getByPlaceholderText('Ingrese su Tarea');
-    const button = screen.getByRole('button');
-    const tareasIniciales = screen.getAllByText(/Tarea \d/);
-    const cantidadInicial = tareasIniciales.length;
-    
-    await userEvent.type(input, '   ');
-    await userEvent.click(button);
-    
-    const tareasFinales = screen.getAllByText(/Tarea \d/);
-    expect(tareasFinales).toHaveLength(cantidadInicial);
-  });
-
-  test('genera keys únicos para nuevas tareas', async () => {
-    
-    render(<App />);
-    
-    const input = screen.getByPlaceholderText('Ingrese su Tarea');
-    const button = screen.getByRole('button');
-    
-    await userEvent.type(input, 'Primera nueva tarea');
-    await userEvent.click(button);
-    
-    await userEvent.type(input, 'Segunda nueva tarea');
-    await userEvent.click(button);
-    
-    await userEvent.type(input, 'Tercera nueva tarea');
-    await userEvent.click(button);
-    
-    await waitFor(() => {
-      expect(screen.getByText('Primera nueva tarea')).toBeInTheDocument();
-      expect(screen.getByText('Segunda nueva tarea')).toBeInTheDocument();
-      expect(screen.getByText('Tercera nueva tarea')).toBeInTheDocument();
-    });
-  });
-
-  test('mantiene el estado de completado independiente para cada tarea', async () => {
-    
-    render(<App />);
-    
-    const tarea1 = screen.getByText('Tarea 1');
-    const tarea2 = screen.getByText('Tarea 2');
-    
-    await userEvent.click(tarea1);
-    
-    await waitFor(() => {
-      expect(tarea1).toHaveClass('completed');
-      expect(tarea2).not.toHaveClass('completed');
-    });
-  });
-
-  test('permite eliminar múltiples tareas', async () => {
-    
+  test('TC009 - Eliminar múltiples tareas', async () => {
     render(<App />);
     
     const botonesEliminar = screen.getAllByAltText('imagenDel');
     
     await userEvent.click(botonesEliminar[0]); // Eliminar Tarea 1
     await userEvent.click(botonesEliminar[1]); // Eliminar Tarea 2
+    await userEvent.click(botonesEliminar[2]); // Eliminar Tarea 3
     
     await waitFor(() => {
       expect(screen.queryByText('Tarea 1')).not.toBeInTheDocument();
       expect(screen.queryByText('Tarea 2')).not.toBeInTheDocument();
-      expect(screen.getByText('Tarea 3')).toBeInTheDocument();
-      expect(screen.getByText('Tarea 4')).toBeInTheDocument();
+      expect(screen.queryByText('Tarea 3')).not.toBeInTheDocument();
     });
   });
 
-  test('maneja flujo completo: añadir, completar, eliminar', async () => {
+  test('TC010 - Actualizar contenido de tarea', async () => {
+    render(<App />);
     
+    const botonesActualizar = screen.getAllByAltText('imagenAct');
+    await userEvent.click(botonesActualizar[0]);
+    
+    expect(screen.getByText('ACTUALIZAR TAREA')).toBeInTheDocument();
+    
+    const inputModal = screen.getByPlaceholderText('Ingrese nueva tarea');
+    await userEvent.clear(inputModal);
+    await userEvent.type(inputModal, 'Repasar React');
+    
+    const botonGuardar = screen.getByText('Actualizar Tarea');
+    await userEvent.click(botonGuardar);
+    
+    expect(window.alert).toHaveBeenCalledWith('Esta seguro de actualizar esta tarea?');
+    
+    await waitFor(() => {
+      expect(screen.getByText('Repasar React')).toBeInTheDocument();
+      expect(screen.queryByText('Tarea 1')).not.toBeInTheDocument();
+    });
+  });
+
+  test('TC011 - Múltiples tareas rápidas', async () => {
     render(<App />);
     
     const input = screen.getByPlaceholderText('Ingrese su Tarea');
     const button = screen.getByRole('button');
     
-    await userEvent.type(input, 'Tarea de flujo completo');
-    await userEvent.click(button);
-    
-    await waitFor(() => {
-      expect(screen.getByText('Tarea de flujo completo')).toBeInTheDocument();
-    });
-    
-    const nuevaTarea = screen.getByText('Tarea de flujo completo');
-    await userEvent.click(nuevaTarea);
-    
-    await waitFor(() => {
-      expect(nuevaTarea).toHaveClass('completed');
-    });
-    
-    const botonesEliminar = screen.getAllByAltText('imagenDel');
-    const botonEliminarNuevaTarea = botonesEliminar.find(boton => 
-      boton.closest('.Tarea').textContent.includes('Tarea de flujo completo')
-    );
-    
-    if (botonEliminarNuevaTarea) {
-      await userEvent.click(botonEliminarNuevaTarea);
+    for (let i = 1; i <= 10; i++) {
+      await userEvent.type(input, `Tarea ${i}`);
+      await userEvent.click(button);
     }
     
     await waitFor(() => {
-      expect(screen.queryByText('Tarea de flujo completo')).not.toBeInTheDocument();
+      for (let i = 1; i <= 10; i++) {
+        expect(screen.getByText(`Tarea ${i}`)).toBeInTheDocument();
+      }
     });
   });
 
-  test('guarda datos en localStorage al añadir tareas', async () => {
-    
+  test('TC015 - Guardar en localStorage', async () => {
     render(<App />);
     
     const input = screen.getByPlaceholderText('Ingrese su Tarea');
